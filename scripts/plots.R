@@ -10,8 +10,9 @@
 ###############################################################################
 require(dplyr)
 require(tidyr)
-# library(extrafont)
-# loadfonts()
+library(extrafont)
+font_import()
+loadfonts(device="postscript")
 
 #' load data
 filenames <- list.files("data", pattern="*.csv", full.names=TRUE)
@@ -32,8 +33,8 @@ FunCleanYears <- function(XX) {
 #' get mid period values for the 4 tables that have period data
 ldf[[2]] <- FunCleanYears(ldf[[2]])
 ldf[[4]] <- FunCleanYears(ldf[[4]])
-ldf[[6]] <- FunCleanYears(ldf[[6]])
-ldf[[7]] <- FunCleanYears(ldf[[7]])
+#ldf[[6]] <- FunCleanYears(ldf[[6]])
+#ldf[[7]] <- FunCleanYears(ldf[[7]])
 
 #' Basic plot function 
 ###############################################################################
@@ -54,8 +55,8 @@ FunLine <- function(x, y, lty = 1){
 }
 #' Figure 1
 ###############################################################################
-# postscript(file="figures/fig1.eps", width=8, height=8, family="Garamond", 
-#             onefile=FALSE, horizontal=FALSE,paper = "special")
+postscript(file="figures/fig1.eps", width=8, height=8, family="Garamond", 
+             onefile=FALSE, horizontal=FALSE,paper = "special")
 FunPlot(ldf[[1]]$Year,list(ldf[[1]]$TFR), ylim = c(0,8))
 axis(1, at = ldf[[1]]$Year, cex.axis = 1.2)
 axis(2, at = 0:8, las = 2, cex.axis = 1.2)
@@ -65,11 +66,11 @@ X <- lapply(seq(0,8,2), function (x){
 FunLine(ldf[[1]]$Year,ldf[[1]]$TFR)
 mtext("Total Fertility Rate", side = 2, line = 2.5, cex = 1.5)
 mtext("Year", side = 1, line = 3, cex = 1.5)
-# dev.off()
+ dev.off()
 
 #' Figure 2
 ###############################################################################
-# postscript(file="figures/fig2.eps", width=8, height=8, family="Garamond",
+#postscript(file="figures/fig2.eps", width=8, height=8, family="Garamond",
 #            onefile=FALSE, horizontal=FALSE,paper = "special")
 FunPlot(ldf[[2]]$x,list(ldf[[2]]$IMR,ldf[[2]]$U5MR), ylim = c(0, 250))
 axis(1, at = ldf[[2]]$x, labels= ldf[[2]]$Year, cex.axis = 1.2)
@@ -87,13 +88,13 @@ legend(2002.5, 250, c("Under 5 M.R.", "Infant M.R."), lty = c(5,1),
 legend(2002.5, 250, c("", ""), lty = c(0,0),
        cex=1.2, pt.cex = 1,  bty = "n", pch = 19,
        y.intersp = 2)
-# dev.off()
+#dev.off()
 
 #' Figure 3
 ###############################################################################
 # postscript(file="figures/fig3.eps", width=8, height=8, family="Garamond",
 #            onefile=FALSE, horizontal=FALSE,paper = "special")
-FunPlot(ldf[[3]]$x,list(ldf[[3]]$mmr), ylim = c(0,1500))
+FunPlot(ldf[[3]]$x[-1],list(ldf[[3]]$mmr[-1]), ylim = c(0,1500))
 axis(1, at = ldf[[1]]$x, cex.axis = 1.2)
 axis(2, at = seq(0, 1500, 300), las = 2, cex.axis = 1.2)
 X <- lapply(seq(0, 1500, 300), function (X){
@@ -146,44 +147,44 @@ legend(1985, 40, c("", ""), lty = c(0,0),
 
 #' Figure 6
 ###############################################################################
-# postscript(file="figures/fig6.eps", width=8, height=8, family="Garamond",
-#            onefile=FALSE, horizontal=FALSE,paper = "special")
-FunPlot(ldf[[6]]$x,list(ldf[[6]]$Male,ldf[[6]]$Female), ylim = c(0, 100))
-axis(1, at = ldf[[6]]$x, labels= ldf[[6]]$Year, cex.axis = 1.2)
+postscript(file="figures/fig6.eps", width=8, height=8, family="GaramondNo8",
+            onefile=FALSE, horizontal=FALSE,paper = "special")
+FunPlot(ldf[[7]]$Year,list(ldf[[7]]$male,ldf[[7]]$female), ylim = c(0, 105))
+axis(1, at = ldf[[7]]$Year, labels= ldf[[7]]$Year, cex.axis = 1.2)
 axis(2, at = seq(0, 100, 10), las = 2, cex.axis = 1.2)
 X <- lapply(seq(0, 100, 20), function (x){
-  lines(range(ldf[[6]]$x), c(x,x),
+  lines(range(ldf[[7]]$Year), c(x,x),
         lty = 2, col = "gray")
 })
-FunLine(ldf[[6]]$x,ldf[[6]]$Male)
-FunLine(ldf[[6]]$x,ldf[[6]]$Female, lty = 5)
+FunLine(ldf[[7]]$Year,ldf[[7]]$male)
+FunLine(ldf[[7]]$Year,ldf[[7]]$female, lty = 5)
 mtext("Primary Enrolment Ratio", side = 2, line = 3, cex = 1.5)
 mtext("Year", side = 1, line = 3, cex = 1.5)
-legend(1985, 100, c("Male", "Female"), lty = c(1,5),
+legend(1970, 100, c("Male", "Female"), lty = c(1,5),
        cex=1.2, lwd = 2, bty = "n",       y.intersp = 2)
-legend(1985, 100, c("", ""), lty = c(0,0),
+legend(1970, 100, c("", ""), lty = c(0,0),
        cex=1.2, pt.cex = 1,  bty = "n", pch = 19,
        y.intersp = 2)
-# dev.off()
+dev.off()
 
 #' Figure 7
 ###############################################################################
-# postscript(file="figures/fig7.eps", width=8, height=8, family="Garamond",
-#            onefile=FALSE, horizontal=FALSE,paper = "special")
-FunPlot(ldf[[7]]$x,list(ldf[[7]]$Male,ldf[[7]]$Female), ylim = c(0, 60))
-axis(1, at = ldf[[7]]$x, labels= ldf[[7]]$Year, cex.axis = 1.2)
-axis(2, at = seq(0, 60, 10), las = 2, cex.axis = 1.2)
-X <- lapply(seq(0, 60, 10), function (x){
-  lines(range(ldf[[7]]$x), c(x,x),
+postscript(file="figures/fig7.eps", width=8, height=8, family="GaramondNo8",
+            onefile=FALSE, horizontal=FALSE,paper = "special")
+FunPlot(ldf[[6]]$Year,list(ldf[[6]]$male,ldf[[6]]$female), ylim = c(0, 40))
+axis(1, at = ldf[[6]]$Year, labels= ldf[[6]]$Year, cex.axis = 1.2)
+axis(2, at = seq(0, 40, 10), las = 2, cex.axis = 1.2)
+X <- lapply(seq(0, 40, 10), function (x){
+  lines(range(ldf[[6]]$Year), c(x,x),
         lty = 2, col = "gray")
 })
-FunLine(ldf[[7]]$x,ldf[[7]]$Male)
-FunLine(ldf[[7]]$x,ldf[[7]]$Female, lty = 5)
+FunLine(ldf[[6]]$Year,ldf[[6]]$male)
+FunLine(ldf[[6]]$Year,ldf[[6]]$female, lty = 5)
 mtext("Secondary Gross Enrolment", side = 2, line = 3, cex = 1.5)
 mtext("Year", side = 1, line = 3, cex = 1.5)
-legend(1980, 60, c("Male", "Female"), lty = c(1,5),
+legend(1970, 40, c("Male", "Female"), lty = c(1,5),
        cex=1.2, lwd = 2, bty = "n",       y.intersp = 2)
-legend(1980, 60, c("", ""), lty = c(0,0),
+legend(1970, 40, c("", ""), lty = c(0,0),
        cex=1.2, pt.cex = 1,  bty = "n", pch = 19,
        y.intersp = 2)
-# dev.off()
+dev.off()
