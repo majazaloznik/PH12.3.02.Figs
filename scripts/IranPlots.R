@@ -12,8 +12,8 @@
 require(dplyr)
 require(tidyr)
 library(extrafont)
-font_import()
-loadfonts(device="postscript")
+# font_import()
+(device="postscript")
 
 #' load data
 filenames <- list.files("data", pattern="(03.fig).*\\.csv$", full.names=TRUE)
@@ -134,6 +134,11 @@ legend(1980, -0.25, c("2000 Iran MiDHS"), cex=1.2,lty = 1, lwd = 2, bty = "n",
        col = c("gray1"))
 legend(1980, -0.25, c(""), cex=1.2,lty = 0, pch = 21, bty = "n",  
        col = c("gray1"), pt.bg = "gray60", pt.cex = 1.2)
-
-
 dev.off()
+
+#' Figure 1
+###############################################################################
+postscript(file="figures/03.fig1x.eps", width=12, height=6, family="Garamond", 
+           onefile=FALSE, horizontal=FALSE,paper = "special")
+
+par(mar=c(4.1, 3.6, 1.1, 0.1))
