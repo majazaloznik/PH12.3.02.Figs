@@ -14,6 +14,9 @@ require(tidyr)
 library(extrafont)
 # font_import()
 (device="postscript")
+# for some reason r seems to gorget where ghostscript is every time - i 
+# need it for embedding fonts.. 
+# Sys.setenv(R_GSCMD="C:/Program Files/gs/gs9.16/bin/gswin64c.exe")
 
 #' load data
 filenames <- list.files("data", pattern="(03.fig).*\\.csv$", full.names=TRUE)
@@ -136,9 +139,171 @@ legend(1980, -0.25, c(""), cex=1.2,lty = 0, pch = 21, bty = "n",
        col = c("gray1"), pt.bg = "gray60", pt.cex = 1.2)
 dev.off()
 
-#' Figure 1
+#' Figure 3
 ###############################################################################
-postscript(file="figures/03.fig1x.eps", width=12, height=6, family="Garamond", 
+postscript(file="figures/03.fig3x.eps", width=6, height=6, family="Garamond", 
            onefile=FALSE, horizontal=FALSE,paper = "special")
 
-par(mar=c(4.1, 3.6, 1.1, 0.1))
+par(mar=c(4.1, 4.1, 1.1, 0.1))
+
+FunPlot(ldf[[3]]$Age, ldf[[3]][,1], c(0,1))
+for (i in seq(0,1,0.2)){
+  lines(c(10, 35), c(i,i), lty = 2, col = "gray80")
+}
+
+FunLine(ldf[[3]]$Age, ldf[[3]][,2], lwd = 2, pch = 19, col = "gray70",cex = 1)
+FunLine(ldf[[3]]$Age, ldf[[3]][,3], lwd = 2, pch = 19, col = "gray55",cex = 1)
+FunLine(ldf[[3]]$Age, ldf[[3]][,4], lwd = 2, pch = 19, col = "gray40",cex = 1)
+FunLine(ldf[[3]]$Age, ldf[[3]][,5], lwd = 2, pch = 19, col = "gray10",cex = 1)
+
+axis(1,cex.axis = 1.2)     
+axis(2, las = 2, cex.axis = 1.2,  at = seq(0,1,0.2))
+mtext("Age", side =1, line =2.5, cex = 1.5)
+mtext("Proportion never married", side =2, line =3, cex = 1.5)
+
+legend(25, 1, rev(c("1966 Birth cohort", "1976 Birth cohort", "1981 Birth cohort", "1986 Birth cohort")), 
+      lwd = 2, bty = "n",  y.intersp = 2,pch = rep(19,4),
+       col = c("gray10", "gray40", "gray55", "gray70"))
+
+dev.off()
+
+embedFonts(file="figures/03.fig3x.eps", outfile="figures/03.fig3xEmbedded.eps")
+# then manually change gthe bounding box to 432, 432.. 
+
+
+#' Figure 4
+###############################################################################
+postscript(file="figures/03.fig4x.eps", width=12, height=8, family="Garamond", 
+           onefile=FALSE, horizontal=FALSE,paper = "special")
+
+par(mfrow = c(2,3), xpd = TRUE)
+par(mar=c(2.6, 3.6, 3.1, 1.1))
+
+FunPlot(ldf[[4]]$X, ldf[[4]][,4], c(0,1))
+for (i in seq(0,1,0.2)){
+  lines(c(0, 60), c(i,i), lty = 2, col = "gray80")
+}
+
+FunLine(ldf[[4]]$X[ldf[[4]]$parity.progression == "F2S" & 
+                     ldf[[4]]$education == "Illiterate or primary"],
+        ldf[[4]]$All.women[ldf[[4]]$parity.progression == "F2S" &
+                             ldf[[4]]$education == "Illiterate or primary"], 
+        lwd = 2, pch = 21, col = "gray 60", bg = "gray60",cex = 1.2)
+FunLine(ldf[[4]]$X[ldf[[4]]$parity.progression == "F2S" & 
+                     ldf[[4]]$education == "Illiterate or primary"],
+        ldf[[4]]$Non.users.of.contraception[ldf[[4]]$parity.progression == "F2S" &
+                             ldf[[4]]$education == "Illiterate or primary"], 
+        lwd = 2, pch = 21, col = "gray 40", bg = "gray40",cex = 1.2)
+axis(2, las = 2, cex.axis = 1.2)
+mtext("Illiterate & Primary School", side =3, line =1)
+axis(1)
+
+
+par(mar=c(2.6, 2.35, 3.1, 2.35))
+
+FunPlot(ldf[[4]]$X, ldf[[4]][,4], c(0,1))
+for (i in seq(0,1,0.2)){
+  lines(c(0, 60), c(i,i), lty = 2, col = "gray80")
+}
+FunLine(ldf[[4]]$X[ldf[[4]]$parity.progression == "F2S" & 
+                     ldf[[4]]$education == "Secondary"],
+        ldf[[4]]$All.women[ldf[[4]]$parity.progression == "F2S" &
+                             ldf[[4]]$education == "Secondary"], 
+        lwd = 2, pch = 21, col = "gray 60", bg = "gray60",cex = 1.2)
+FunLine(ldf[[4]]$X[ldf[[4]]$parity.progression == "F2S" & 
+                     ldf[[4]]$education == "Secondary"],
+        ldf[[4]]$Non.users.of.contraception[ldf[[4]]$parity.progression == "F2S" &
+                                              ldf[[4]]$education == "Secondary"], 
+        lwd = 2, pch = 21, col = "gray 40", bg = "gray40",cex = 1.2)
+
+mtext("Secondary School", side =3, line =1)
+axis(1)
+
+
+
+par(mar=c(2.6, 1.1, 3.1, 3.6))
+
+FunPlot(ldf[[4]]$X, ldf[[4]][,4], c(0,1))
+for (i in seq(0,1,0.2)){
+  lines(c(0, 60), c(i,i), lty = 2, col = "gray80")
+}
+FunLine(ldf[[4]]$X[ldf[[4]]$parity.progression == "F2S" & 
+                     ldf[[4]]$education == "Diploma or university"],
+        ldf[[4]]$All.women[ldf[[4]]$parity.progression == "F2S" &
+                             ldf[[4]]$education == "Diploma or university"], 
+        lwd = 2, pch = 21, col = "gray 60", bg = "gray60",cex = 1.2)
+FunLine(ldf[[4]]$X[ldf[[4]]$parity.progression == "F2S" & 
+                     ldf[[4]]$education == "Diploma or university"],
+        ldf[[4]]$Non.users.of.contraception[ldf[[4]]$parity.progression == "F2S" &
+                                              ldf[[4]]$education == "Diploma or university"], 
+        lwd = 2, pch = 21, col = "gray 40", bg = "gray40",cex = 1.2)
+
+mtext("Diploma or university ", side =3, line =1)
+axis(1)
+
+
+par(mar=c(2.6, 3.6, 3.1, 1.1))
+
+FunPlot(ldf[[4]]$X, ldf[[4]][,4], c(0,1))
+for (i in seq(0,1,0.2)){
+  lines(c(0, 60), c(i,i), lty = 2, col = "gray80")
+}
+
+FunLine(ldf[[4]]$X[ldf[[4]]$parity.progression == "S2T" & 
+                     ldf[[4]]$education == "Illiterate or primary"],
+        ldf[[4]]$All.women[ldf[[4]]$parity.progression == "S2T" &
+                             ldf[[4]]$education == "Illiterate or primary"], 
+        lwd = 2, pch = 21, col = "gray 60", bg = "gray60",cex = 1.2)
+FunLine(ldf[[4]]$X[ldf[[4]]$parity.progression == "S2T" & 
+                     ldf[[4]]$education == "Illiterate or primary"],
+        ldf[[4]]$Non.users.of.contraception[ldf[[4]]$parity.progression == "S2T" &
+                                              ldf[[4]]$education == "Illiterate or primary"], 
+        lwd = 2, pch = 21, col = "gray 40", bg = "gray40",cex = 1.2)
+axis(2, las = 2, cex.axis = 1.2)
+mtext("Illiterate & Primary School", side =3, line =1)
+axis(1)
+
+
+par(mar=c(2.6, 2.35, 3.1, 2.35))
+
+FunPlot(ldf[[4]]$X, ldf[[4]][,4], c(0,1))
+for (i in seq(0,1,0.2)){
+  lines(c(0, 60), c(i,i), lty = 2, col = "gray80")
+}
+FunLine(ldf[[4]]$X[ldf[[4]]$parity.progression == "S2T" & 
+                     ldf[[4]]$education == "Secondary"],
+        ldf[[4]]$All.women[ldf[[4]]$parity.progression == "S2T" &
+                             ldf[[4]]$education == "Secondary"], 
+        lwd = 2, pch = 21, col = "gray 60", bg = "gray60",cex = 1.2)
+FunLine(ldf[[4]]$X[ldf[[4]]$parity.progression == "S2T" & 
+                     ldf[[4]]$education == "Secondary"],
+        ldf[[4]]$Non.users.of.contraception[ldf[[4]]$parity.progression == "S2T" &
+                                              ldf[[4]]$education == "Secondary"], 
+        lwd = 2, pch = 21, col = "gray 40", bg = "gray40",cex = 1.2)
+
+mtext("Secondary School", side =3, line =1)
+axis(1)
+
+
+
+par(mar=c(2.6, 1.1, 3.1, 3.6))
+
+FunPlot(ldf[[4]]$X, ldf[[4]][,4], c(0,1))
+for (i in seq(0,1,0.2)){
+  lines(c(0, 60), c(i,i), lty = 2, col = "gray80")
+}
+FunLine(ldf[[4]]$X[ldf[[4]]$parity.progression == "S2T" & 
+                     ldf[[4]]$education == "Diploma or university"],
+        ldf[[4]]$All.women[ldf[[4]]$parity.progression == "S2T" &
+                             ldf[[4]]$education == "Diploma or university"], 
+        lwd = 2, pch = 21, col = "gray 60", bg = "gray60",cex = 1.2)
+FunLine(ldf[[4]]$X[ldf[[4]]$parity.progression == "S2T" & 
+                     ldf[[4]]$education == "Diploma or university"],
+        ldf[[4]]$Non.users.of.contraception[ldf[[4]]$parity.progression == "S2T" &
+                                              ldf[[4]]$education == "Diploma or university"], 
+        lwd = 2, pch = 21, col = "gray 40", bg = "gray40",cex = 1.2)
+
+mtext("Diploma or university ", side =3, line =1)
+axis(1)
+
+
