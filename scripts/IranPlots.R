@@ -5,6 +5,8 @@
 ###############################################################################
 #' data copy pasted from submitted excel file. double checked
 #' sources were not checked but are given nonetheless
+#' 17.1. redid the figures because the typesetting fucked up the font
+#' now they are without embedding fonts, this seems to work?
 ###############################################################################
 
 #' 00. Preliminaries
@@ -13,7 +15,8 @@ require(dplyr)
 require(tidyr)
 library(extrafont)
 # font_import()
-fonttable()
+loadfonts(device="postscript")
+
 # for some reason r seems to forget where ghostscript is every time - i 
 # need it for embedding fonts.. 
 # Sys.setenv(R_GSCMD="C:/Program Files/gs/gs9.16/bin/gswin64c.exe")
@@ -40,6 +43,7 @@ FunLine <- function(x, y, lty = 1, lwd = 2, pch = 19, ...){
 ###############################################################################
 w <- 6
 h <-6
+
 postscript(file="figures/03.fig1x.eps", width=w, height=h, family="Garamond", 
            onefile=FALSE, horizontal=FALSE,paper = "special")
 layout(1)
@@ -56,7 +60,7 @@ for (i in seq(0,7,1)){
 lines(c(1980, 2010), c(i,i), lty = 2, col = "gray80")
 }
 
-legend(1994.5, 7, c("Synthetic PPR", "Real PPR", "Own children - DHSs", "Own children - censuses"), 
+legend(1994.5, 7, c("Synthetic PPR", "Real PPR", "Own children (DHSs)", "Own children (censuses)"), 
        cex=1.2,lty = c(1,1,1,2), lwd = 2, bty = "n",  y.intersp = 2,
        col = c("gray60", "gray60", "black", "black"))
 legend(1994.5, 7, c("", ""), lty = c(0,0, 0, 0),
@@ -70,8 +74,6 @@ mtext("Year", side = 1, line = 3, cex = 1.5)
 
 
 dev.off()
-embedFonts(file="figures/03.fig1x.eps", outfile="figures/03.fig1xEmbedded.eps",
-           options = paste0("-dDEVICEWIDTHPOINTS=", w*72,  " -dDEVICEHEIGHTPOINTS=", h*72))
 
 
 #' Figure 2
@@ -147,8 +149,8 @@ legend("center", c("2000 Iran DHS", "2000 Iran MiDHS"), cex=1.7,lty = 1, lwd = 2
        col = c("gray50", "gray1"), pt.bg = c("gray60", "gray80"), horiz = TRUE, pch = 21, pt.cex = 1.2)
 
 dev.off()
-embedFonts(file="figures/03.fig2x.eps", outfile="figures/03.fig2xEmbedded.eps",
-           options = paste0("-dDEVICEWIDTHPOINTS=", w*72,  " -dDEVICEHEIGHTPOINTS=", h*72))
+#embedFonts(file="figures/03.fig2x.eps", outfile="figures/03.fig2xEmbedded.eps",
+#           options = paste0("-dDEVICEWIDTHPOINTS=", w*72,  " -dDEVICEHEIGHTPOINTS=", h*72))
 
 
 #' Figure 3
@@ -181,8 +183,8 @@ legend(25, 1, rev(c("1966 Birth cohort", "1976 Birth cohort", "1981 Birth cohort
 
 dev.off()
 
-embedFonts(file="figures/03.fig3x.eps", outfile="figures/03.fig3xEmbedded.eps",
-           options = paste0("-dDEVICEWIDTHPOINTS=", w*72,  " -dDEVICEHEIGHTPOINTS=", h*72))
+#embedFonts(file="figures/03.fig3x.eps", outfile="figures/03.fig3xEmbedded.eps",
+#           options = paste0("-dDEVICEWIDTHPOINTS=", w*72,  " -dDEVICEHEIGHTPOINTS=", h*72))
 
 
 #' Figure 4
@@ -344,6 +346,24 @@ legend("center", c("All women", "Non-users of contraception"), cex=1.3,lty = 1, 
 
 
 dev.off()
+#embedFonts(file="figures/03.fig4x.eps", outfile="figures/03.fig4xEmbedded.eps",
+#           options = paste0("-dDEVICEWIDTHPOINTS=", w*72,  " -dDEVICEHEIGHTPOINTS=", h*72))
 
-embedFonts(file="figures/03.fig4x.eps", outfile="figures/03.fig4xEmbedded.eps",
-           options = paste0("-dDEVICEWIDTHPOINTS=", w*72,  " -dDEVICEHEIGHTPOINTS=", h*72))
+## reproducible example of embedding 
+# 
+# require(extrafont)
+# w <- 6
+# h <- 8
+# postscript(file="test.eps", width=w, height=h, family="Garamond", 
+#            horizontal=FALSE, # to make sure chart is printed in portrait orientation 
+#            paper = "special") # to make sure paper is not a4, but whatever you tell it to be
+# plot(1:10, runif(10), type = "l",
+#      main = "Title in my fave font",
+#      xlab = "x-label",
+#      ylab = "y-label")
+# 
+# dev.off()
+# 
+# embedFonts(file="test.eps",
+#            options = paste0("-dDEVICEWIDTHPOINTS=", w*72,  
+#                             " -dDEVICEHEIGHTPOINTS=", h*72))

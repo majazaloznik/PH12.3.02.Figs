@@ -11,7 +11,7 @@
 require(dplyr)
 require(tidyr)
 library(extrafont)
-font_import()
+#font_import()
 loadfonts(device="postscript")
 
 #' load data
@@ -33,8 +33,6 @@ FunCleanYears <- function(XX) {
 #' get mid period values for the 4 tables that have period data
 ldf[[2]] <- FunCleanYears(ldf[[2]])
 ldf[[4]] <- FunCleanYears(ldf[[4]])
-#ldf[[6]] <- FunCleanYears(ldf[[6]])
-#ldf[[7]] <- FunCleanYears(ldf[[7]])
 
 #' Basic plot function 
 ###############################################################################
@@ -53,9 +51,10 @@ FunLine <- function(x, y, lty = 1){
     lines(x, y, lwd = 2, lty = lty)
     points(x, y, pch = 19)
 }
+
 #' Figure 1
 ###############################################################################
-postscript(file="figures/fig1.eps", width=6, height=6, family="Garamond", 
+postscript(file="figures/fig1.eps", width=8, height=8, family="Garamond", 
              onefile=FALSE, horizontal=FALSE,paper = "special")
 FunPlot(ldf[[1]]$Year,list(ldf[[1]]$TFR), ylim = c(0,8))
 axis(1, at = ldf[[1]]$Year, cex.axis = 1.2)
@@ -73,7 +72,7 @@ mtext("Year", side = 1, line = 3, cex = 1.5)
 
 #' Figure 2
 ###############################################################################
-postscript(file="figures/fig2.eps", width=6, height=6, family="Garamond",
+postscript(file="figures/fig2.eps", width=8, height=8, family="Garamond",
            onefile=FALSE, horizontal=FALSE,paper = "special")
 FunPlot(ldf[[2]]$x,list(ldf[[2]]$IMR,ldf[[2]]$U5MR), ylim = c(0, 250))
 axis(1, at = ldf[[2]]$x, labels= ldf[[2]]$Year, cex.axis = 1.2)
@@ -98,7 +97,7 @@ dev.off()
 
 #' Figure 3
 ###############################################################################
-postscript(file="figures/fig3.eps", width=6, height=6, family="Garamond",
+postscript(file="figures/fig3.eps", width=8, height=8, family="Garamond",
             onefile=FALSE, horizontal=FALSE,paper = "special")
 FunPlot(ldf[[3]]$x[-1],list(ldf[[3]]$mmr[-1]), ylim = c(0,1500))
 axis(1, at = ldf[[1]]$x, cex.axis = 1.2)
@@ -120,7 +119,7 @@ mtext("Year", side = 1, line = 3, cex = 1.5)
  
 #' Figure 4
 ###############################################################################
- postscript(file="figures/fig4.eps", width=6, height=6, family="Garamond",
+ postscript(file="figures/fig4.eps", width=8, height=8, family="Garamond",
             onefile=FALSE, horizontal=FALSE,paper = "special")
 FunPlot(ldf[[4]]$x,list(ldf[[4]]$pop.growth.rate.new), ylim = c(0, 3.50))
 axis(1, at = ldf[[2]]$x, labels= ldf[[2]]$Year, cex.axis = 1.2)
@@ -137,7 +136,7 @@ mtext("Year", side = 1, line = 3, cex = 1.5)
 
 #' Figure 5
 ###############################################################################
- postscript(file="figures/fig5.eps", width=6, height=6, family="Garamond",
+ postscript(file="figures/fig5.eps", width=8, height=8, family="Garamond",
             onefile=FALSE, horizontal=FALSE,paper = "special")
 FunPlot(ldf[[5]]$year,list(ldf[[5]]$all.women,ldf[[5]]$ever.married.women), ylim = c(0, 40))
 axis(1, at = ldf[[5]]$year, labels= ldf[[5]]$year, cex.axis = 1.2)
@@ -159,7 +158,7 @@ legend(1985, 40, c("", ""), lty = c(0,0),
 
 #' Figure 6
 ###############################################################################
-postscript(file="figures/fig6.eps", width=6, height=6, family="Garamond",
+postscript(file="figures/fig6.eps", width=8, height=8, family="Garamond",
             onefile=FALSE, horizontal=FALSE,paper = "special")
 FunPlot(ldf[[7]]$Year,list(ldf[[7]]$male,ldf[[7]]$female), ylim = c(0, 105))
 axis(1, at = ldf[[7]]$Year, labels= ldf[[7]]$Year, cex.axis = 1.2)
@@ -181,7 +180,7 @@ dev.off()
 
 #' Figure 7
 ###############################################################################
-postscript(file="figures/fig7.eps", width=6, height=6, family="Garamond",
+postscript(file="figures/fig7.eps", width=8, height=8, family="Garamond",
             onefile=FALSE, horizontal=FALSE,paper = "special")
 FunPlot(ldf[[6]]$Year,list(ldf[[6]]$male,ldf[[6]]$female), ylim = c(0, 40))
 axis(1, at = ldf[[6]]$Year, labels= ldf[[6]]$Year, cex.axis = 1.2)
